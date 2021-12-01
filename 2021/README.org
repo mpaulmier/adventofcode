@@ -21,7 +21,7 @@
     `(let* ((url (concat (concat "https://adventofcode.com/2021/day/" (int-to-string ,day)) "/input"))
             (lexical-binding t)
             (filename (concat "inputs/" (int-to-string ,day)))
-            (cookie (mp/file-content "session-cookie.txt"))
+            (cookie (mp/file-content "../session-cookie.txt"))
             (url-request-extra-headers
              (list (cons "Cookie" cookie))))
        (if (not (file-exists-p filename))

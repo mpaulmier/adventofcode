@@ -28,7 +28,7 @@
            (url-copy-file url filename))
 
        ;; Load data into input list
-       (let ((input (funcall #'parser (mp/file-content filename))))
+       (let ((input (funcall ,parser (mp/file-content filename))))
          (list ,@part1 ,@part2))))
 #+end_src
 

@@ -1,7 +1,12 @@
 #+title: 2021 Advent of code solutions
 #+author: Matthias Paulmier
 
+My advent of code solutions for 2021. These are writtent in *emacs-lisp* and use
+a lot of the =cl-*= facilities.
+
 * Utils
+
+Extract the contents of a file the emacs way.
 
 #+begin_src emacs-lisp
   (defun mp/file-content (filename)
@@ -11,7 +16,13 @@
        (buffer-substring-no-properties
         (point-min)
         (point-max)))))
+#+end_src
 
+A macro that gives a nice environment to define solutions to the challenges. It
+will probably change a bit as the days progress and I realise it is missing
+some things.
+
+#+begin_src emacs-lisp
   (defmacro defsolution (day parser &rest part1 part2)
     "Utility macro that preloads the input of the DAY.
 
@@ -86,4 +97,61 @@
                   ((equal dir "down") (setf aim (+ aim x)))
                   ((equal dir "up") (setf aim (- aim x))))))
       (* pos depth)))
+#+end_src
+* Day 3
+
+#+begin_src emacs-lisp
+  (defun day3-parser (content)
+    "Change CONTENT to list of lists of bits"
+    (mapcar #'(lambda (x)
+                (cl-map 'list #'(lambda (c) (- c 48)) x))
+            (split-string content)))
+
+  (defun compute-occurences (seq1 seq2)
+    "For each bit in SEQ2 add 1 if 1 or -1 if 0 to the element in
+  SEQ1 at the same position. SEQ1 and SEQ2 must be of equal length"
+    (cl-loop for x in seq2
+             for i from 0 do
+             (if (eq 0 x)
+                 (cl-incf (nth i seq1) -1)
+               (cl-incf (nth i seq1) 1)))
+    seq1)
+
+  (defun list-of-bits-from-occurences (seq &optional revert)
+    "Take SEQ the result of reducing the input with
+  COMPUTE-OCCURENCES and transform it into a list of bits. If
+  REVERT is non nil, 1 means least common bit at this position
+  otherwise it is the most common."
+    (let ((comparator (if revert #'< #'>)))
+      (mapcar #'(lambda (x) (if (funcall comparator x 0) 1 0)) seq)))
+
+  (defun list-of-bits-to-number (seq)
+    (string-to-number (cl-concatenate 'string (mapcar #'(lambda (x) (+ 48 x)) seq)) 2))
+
+  (defun find-number-from-bits (seq bits)
+    "SEQ is a list of list of numbers. Go through eash position and
+  remove all lists that don't contain the bits in BITS"
+    (let ((seq-copy (cl-copy-list seq)))
+      (cl-loop for bit in bits
+               for i from 0
+               while (> (length seq-copy) 1) do
+               (setf seq-copy (cl-remove-if-not #'(lambda (x) (eq bit (nth i x))) seq-copy)))
+      (car seq-copy)))
+
+  (defmacro let-part (&rest body)
+    "Both part1 and part2 use the same variables"
+    `(let* ((occurences (cl-reduce #'compute-occurences
+                                   input
+                                   :initial-value (make-list (length (car input)) 0)))
+            (gamma (list-of-bits-from-occurences occurences))
+            (epsilon (list-of-bits-from-occurences occurences t)))
+       ,@body))
+
+  (defsolution 3 #'day3-parser
+    (let-part
+     (* (list-of-bits-to-number gamma) (list-of-bits-to-number epsilon)))
+    (let-part
+     (let ((co2 (find-number-from-bits input gamma))
+           (oxygen (find-number-from-bits input epsilon)))
+       (* (list-of-bits-to-number co2) (list-of-bits-to-number oxygen)))))
 #+end_src

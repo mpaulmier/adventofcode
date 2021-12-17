@@ -47,9 +47,9 @@ well as the score of the grid."
                   (compute-score grid so-far))))
 
 (defun part-result (fun ranks-and-scores)
-  (cl-reduce
-   #'(lambda (winner elem) (if (funcall fun (car winner) (car elem)) elem winner))
-   ranks-and-scores))
+  (cdr (cl-reduce
+        #'(lambda (winner elem) (if (funcall fun (car winner) (car elem)) elem winner))
+        ranks-and-scores)))
 
 (with-input-for-day 4
   #'day4-parser
@@ -59,6 +59,6 @@ well as the score of the grid."
           (mapcar #'(lambda (grid) (compute-rank-and-score grid picks)) grids)))
     (cons
      ;; First part
-     (cdr (part-result #'> ranks-and-scores))
+     (part-result #'> ranks-and-scores)
      ;; Second part
-     (cdr (part-result #'< ranks-and-scores)))))
+     (part-result #'< ranks-and-scores))))

@@ -1,3 +1,5 @@
 session-cookie.txt
 /*/inputs/*
 !/*/inputs/.gitkeep
+
+.python-version

@@ -11,6 +11,7 @@
   "Utility macro that preloads the input of the DAY.
 
 PARSER is a function that takes a string argument corresponding to the DAY's input."
+  (declare (indent 1))
   `(let* ((url (concat (concat "https://adventofcode.com/2021/day/" (int-to-string ,day)) "/input"))
           (lexical-binding t)
           (filename (concat "inputs/" (int-to-string ,day)))

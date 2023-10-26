@@ -50,11 +50,11 @@
      ,@body))
 
 (with-input-for-day 3
-                    #'day3-parser
-                    (cons
-                     (let-part
-                      (* (list-of-bits-to-number gamma) (list-of-bits-to-number epsilon)))
-                     (let-part
-                      (let ((co2 (find-gaz-rating input t))
-                            (oxygen (find-gaz-rating input nil)))
-                        (* co2 oxygen)))))
+  #'day3-parser
+  (cons
+   (let-part
+    (* (list-of-bits-to-number gamma) (list-of-bits-to-number epsilon)))
+   (let-part
+    (let ((co2 (find-gaz-rating input t))
+          (oxygen (find-gaz-rating input nil)))
+      (* co2 oxygen)))))

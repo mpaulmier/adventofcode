@@ -17,7 +17,7 @@ PARSER is a function that takes a string argument corresponding to the DAY's inp
           (filename (concat "inputs/" (int-to-string ,day)))
           (cookie (mp/file-content "../session-cookie.txt"))
           (url-request-extra-headers
-           (list (cons "Cookie" cookie))))
+           (list (cons "Cookie" (concat "session=" cookie)))))
      (if (not (file-exists-p filename))
          (url-copy-file url filename))
 

@@ -9,15 +9,47 @@ function read_lines_from_file(filename)
     return lines
 end
 
-function print_table(_table)
-    print("{")
-    for k, v in pairs(_table) do
-        print("  " .. tostring(k) .. ": " .. tostring(v))
+function print_table(tbl, indent)
+    indent = indent or 1
+    print(string.rep("  ", indent - 1) .. "{")
+    for idx, value in pairs(tbl) do
+        if type(value) == 'table' then
+            value = print_table(value, indent + 1)
+        else
+            print(string.rep("  ", indent) .. tostring(idx) .. ": " .. tostring(value))
+        end
     end
-    print("}")
+    print(string.rep("  ", indent - 1) .. "}")
+end
+
+function split(str)
+    local res = {}
+    for elem in str:gmatch("[^%s]+") do
+        table.insert(res, elem)
+    end
+    return res
+end
+
+function sum(lst)
+    local res = 0
+    for _, num in pairs(lst) do
+        res = res + num
+    end
+    return res
+end
+
+function map(tbl, fun)
+    local res = {}
+    for k, v in pairs(tbl) do
+        res[k] = fun(v)
+    end
+    return res
 end
 
 return {
     read_lines_from_file = read_lines_from_file,
     print_table = print_table,
+    split = split,
+    sum = sum,
+    map = map,
 }

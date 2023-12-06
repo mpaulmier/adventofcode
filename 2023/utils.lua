@@ -46,10 +46,20 @@ function map(tbl, fun)
     return res
 end
 
+function join(tbl, join_str)
+    if join_str == nil then join_str = '' end
+    local res = tbl[1]
+    for i = 2, #tbl do
+        res = res .. join_str .. tbl[i]
+    end
+    return res
+end
+
 return {
     read_lines_from_file = read_lines_from_file,
     print_table = print_table,
     split = split,
     sum = sum,
     map = map,
+    join = join,
 }

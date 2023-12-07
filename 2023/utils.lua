@@ -24,10 +24,16 @@ function print_table(tbl, indent)
     print(string.rep("  ", indent - 1) .. "}" .. comma .. "")
 end
 
-function split(str)
+function split(str, splitter)
     local res = {}
-    for elem in str:gmatch("[^%s]+") do
-        table.insert(res, elem)
+    if splitter ~= nil then
+        for elem in str:gmatch("[^" .. splitter .. "]+") do
+            table.insert(res, elem)
+        end
+    else
+        for chr in str:gmatch('%w') do
+            table.insert(res, chr)
+        end
     end
     return res
 end

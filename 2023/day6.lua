@@ -1,11 +1,11 @@
 local utils = require("utils")
 
 function get_times(lines)
-    return utils.split(lines[1]:sub(lines[1]:find(":") + 1))
+    return utils.split(lines[1]:sub(lines[1]:find(":") + 1), "%s")
 end
 
 function get_dists(lines)
-    return utils.split(lines[2]:sub(lines[2]:find(":") + 1))
+    return utils.split(lines[2]:sub(lines[2]:find(":") + 1), "%s")
 end
 
 function get_part1_input(lines)

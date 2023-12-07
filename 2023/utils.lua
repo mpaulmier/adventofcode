@@ -11,15 +11,17 @@ end
 
 function print_table(tbl, indent)
     indent = indent or 1
-    print(string.rep("  ", indent - 1) .. "{")
-    for idx, value in pairs(tbl) do
+    print("{")
+    for key, value in pairs(tbl) do
         if type(value) == 'table' then
-            value = print_table(value, indent + 1)
+            io.write(string.rep("  ", indent) .. tostring(key) .. ": ")
+            print_table(value, indent + 1)
         else
-            print(string.rep("  ", indent) .. tostring(idx) .. ": " .. tostring(value))
+            io.write(string.rep("  ", indent) .. tostring(key) .. ": " .. tostring(value) .. ",\n")
         end
     end
-    print(string.rep("  ", indent - 1) .. "}")
+    local comma = (indent > 1) and "," or ""
+    print(string.rep("  ", indent - 1) .. "}" .. comma .. "")
 end
 
 function split(str)

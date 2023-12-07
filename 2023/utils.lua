@@ -46,6 +46,18 @@ function sum(lst)
     return res
 end
 
+function max(tbl, key_to_exclude)
+    local max = nil
+    local max_index = nil
+    for key, val in pairs(tbl) do
+        if (max == nil or val > max) and key ~= key_to_exclude then
+            max = val
+            max_key = key
+        end
+    end
+    return max, max_key
+end
+
 function map(tbl, fun)
     local res = {}
     for k, v in pairs(tbl) do
@@ -63,11 +75,19 @@ function join(tbl, join_str)
     return res
 end
 
+function len(tbl)
+    local res = 0
+    for _, _ in pairs(tbl) do res = res + 1 end
+    return res
+end
+
 return {
     read_lines_from_file = read_lines_from_file,
     print_table = print_table,
     split = split,
     sum = sum,
+    max = max,
     map = map,
     join = join,
+    len = len,
 }

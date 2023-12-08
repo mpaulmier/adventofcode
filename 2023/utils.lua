@@ -81,6 +81,18 @@ function len(tbl)
     return res
 end
 
+function all(tbl, fun)
+    local res = true
+    for key, val in pairs(tbl) do
+        res = res and fun(key, val)
+    end
+    return res
+end
+
+function gcd(a, b)
+	return b==0 and a or gcd(b,a%b)
+end
+
 return {
     read_lines_from_file = read_lines_from_file,
     print_table = print_table,
@@ -90,4 +102,6 @@ return {
     map = map,
     join = join,
     len = len,
+    all = all,
+    gcd = gcd,
 }
